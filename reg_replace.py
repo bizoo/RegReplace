@@ -400,18 +400,23 @@ class RegReplaceCommand(sublime_plugin.TextCommand):
                 replaced += 1
                 # Test partial fold
                 # Use replace to specify folding part
-                # if self.action in ('fold', 'unfold') and replace[count]:
-                #     offset = self.view.substr(region).find(replace[count])
-                #     if offset > -1:
-                #         region = sublime.Region(region.begin() + offset, region.begin() + (offset + len(replace[count])))
-                # if self.find_only or self.action != None:
-                # Use replace to specify NOT folding part
                 if self.action in ('fold', 'unfold') and replace[count]:
                     offset = self.view.substr(region).find(replace[count])
                     if offset > -1:
-                        self.target_regions.append(sublime.Region(region.begin(), region.begin() + offset))
-                        self.target_regions.append(sublime.Region(region.begin() + (offset + len(replace[count])), region.end()))
-                elif self.find_only or self.action != None:
+                        region = sublime.Region(region.begin() + offset, region.begin() + (offset + len(replace[count])))
+                if self.find_only or self.action != None:
+                # Use replace to specify NOT folding part
+                # if self.action in ('fold', 'unfold') and replace[count]:
+                #     print replace[count]
+                #     offset = self.view.substr(region).find(replace[count])
+                #     print offset
+                #     print region.begin(), region.begin() + offset
+                #     print region.begin() + (offset + len(replace[count])), region.end()
+                #     print "***************"
+                #     if offset > -1:
+                #         self.target_regions.append(sublime.Region(region.begin(), region.begin() + offset))
+                #         self.target_regions.append(sublime.Region(region.begin() + (offset + len(replace[count])), region.end()))
+                # elif self.find_only or self.action != None:
                     # If "find only" or replace action is overridden, just track regions
                     self.target_regions.append(region)
                 else:
